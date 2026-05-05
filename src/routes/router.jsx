@@ -2,6 +2,9 @@ import { createBrowserRouter } from "react-router";
 import RootLayout from "../layouts/RootLayout";
 import Home from "../pages/Home/Home/Home";
 import Coverage from "../pages/Coverage/Coverage";
+import AuthLayout from "../layouts/AuthLayout";
+import Register from "../pages/Auth/Register/Register";
+import Login from "../pages/Auth/Login/Login";
 
 export const router = createBrowserRouter([
   {
@@ -19,4 +22,18 @@ export const router = createBrowserRouter([
         }
     ]
   },
+  {
+    path:"/",
+    Component: AuthLayout,
+    children: [
+      {
+        path:'login',
+        Component: Login
+      },
+      {
+        path:'register',
+        Component: Register
+      }
+    ]
+  }
 ]);

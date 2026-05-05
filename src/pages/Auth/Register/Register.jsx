@@ -1,6 +1,8 @@
 import React from "react";
 import { useForm } from "react-hook-form";
 import useAuth from "../../../hooks/useAuth";
+import { Link } from "react-router";
+import SocialLogin from "../SocialLogin/SocialLogin";
 
 const Register = () => {
   const {
@@ -23,15 +25,17 @@ const Register = () => {
   };
 
   return (
-    <div>
-      <form onSubmit={handleSubmit(handleRegistration)}>
+    <div className="card bg-base-100 w-full max-w-lg shrink-0 shadow-2xl">
+      <h2 className="text-3xl text-center text-secondary pt-4">Create an Account</h2>
+        <p className="text-center">Please Register</p>
+      <form onSubmit={handleSubmit(handleRegistration)} className="card-body">
         <fieldset className="fieldset">
           {/* Email */}
           <label className="label">Email</label>
           <input
             type="email"
             {...register("email", { required: true })}
-            className="input"
+            className="input w-full"
             placeholder="Email"
           />
           {errors.email?.type === "required" && (
@@ -40,14 +44,14 @@ const Register = () => {
           {/* Password */}
           <label className="label">Password</label>
           <input
-            type="password"
+            type="password "
             {...register("password", {
               required: true,
               minLength: 6,
               pattern:
                 /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]+$/,
             })}
-            className="input"
+            className="input w-full"
             placeholder="Password"
           />
           {errors.password?.type === "required" && (
@@ -66,9 +70,11 @@ const Register = () => {
           <div>
             <a className="link link-hover">Forgot password?</a>
           </div>
-          <button className="btn btn-neutral mt-4">Register</button>
+          <button className="btn btn-primary text-secondary font-bold mt-4">Register</button>
         </fieldset>
+        <p className="flex justify-start items-center gap-2">Already have an account?<Link to="/login" className="font-bold text-lg text-primary underline"> Login</Link></p>
       </form>
+      <SocialLogin/>
     </div>
   );
 };

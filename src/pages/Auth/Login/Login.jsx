@@ -1,22 +1,28 @@
 import React from "react";
 import { useForm } from "react-hook-form";
 import useAuth from "../../../hooks/useAuth";
-import { Link } from "react-router";
+import { Link, useLocation, useNavigate } from "react-router";
 import SocialLogin from "../SocialLogin/SocialLogin";
 
 const Login = () => {
     const {register, formState:{errors}, handleSubmit} = useForm();
     const {signInUser} = useAuth();
+    const navigate = useNavigate();
+    const location = useLocation();
+    console.log("in the Login Page", location);
+
     const handleLogin = (data) => {
         console.log(data);
         signInUser(data.email, data.password)
         .then(result => {
             console.log(result.user)
+            navigate(location?.state || "/");
         })
         .catch(error => {
             console.error(error);
         })            
         }
+    
   return (
     <div className="card bg-base-100 w-full max-w-lg shrink-0 shadow-2xl">
         <h2 className="text-3xl text-center text-secondary pt-4">Welcome Back</h2>
@@ -40,7 +46,7 @@ const Login = () => {
           </div>
           <button className="btn btn-primary text-secondary font-bold mt-4">Login</button>
         </fieldset>
-        <p className="flex justify-start items-center gap-2">Are you new to Zap Shift?    <Link to="/register" className="font-bold text-lg text-primary underline"> Register</Link></p>
+        <p className="flex justify-start items-center gap-2">Are you new to Zap Shift? <Link to="/register" state={location.state} className="font-bold text-lg text-primary underline"> Register</Link></p>
       </form>
       <SocialLogin/>
     </div>

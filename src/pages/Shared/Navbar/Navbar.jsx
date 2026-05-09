@@ -4,26 +4,34 @@ import { Link, NavLink } from "react-router";
 import useAuth from "../../../hooks/useAuth";
 
 const Navbar = () => {
-  const {user,logOut} = useAuth();
-  
+  const { user, logOut } = useAuth();
+
   const handleLogOut = () => {
     logOut()
-    .then()
-    .catch(error => {
-      console.error(error);
-    })
-  }
+      .then()
+      .catch((error) => {
+        console.error(error);
+      });
+  };
   const links = (
     <>
       <li>
         <NavLink>Services</NavLink>
       </li>
       <li>
-        <NavLink to="/send-percel">Send Percel</NavLink>
+        <NavLink to="/send-parcel">Send Parcel</NavLink>
       </li>
       <li>
         <NavLink to="/coverage">Coverage</NavLink>
       </li>
+
+      {user && (
+        <>
+          <li>
+            <NavLink to="dashboard/my-parcels">My Parcels</NavLink>
+          </li>
+        </>
+      )}
     </>
   );
   return (
@@ -57,15 +65,21 @@ const Navbar = () => {
         <Logo />
       </div>
       <div className="navbar-center hidden lg:flex">
-        <ul className="menu menu-horizontal px-1">
-          {links}
-        </ul>
+        <ul className="menu menu-horizontal px-1">{links}</ul>
       </div>
       <div className="navbar-end">
-        {
-          user ? <a onClick={handleLogOut} className="btn">Log Out</a> : <Link className="btn" to="/login">Log In</Link>
-        }
-        <Link className="btn btn-primary text-black" to="/rider">Be a Rider</Link>
+        {user ? (
+          <a onClick={handleLogOut} className="btn">
+            Log Out
+          </a>
+        ) : (
+          <Link className="btn" to="/login">
+            Log In
+          </Link>
+        )}
+        <Link className="btn btn-primary text-black" to="/rider">
+          Be a Rider
+        </Link>
       </div>
     </div>
   );

@@ -142,7 +142,7 @@ const MyParcels = () => {
                   </td>
 
                   <td>
-                    <span className="badge badge-outline badge-primary">
+                    <span className="badge badge-outline text-secondary">
                       ৳ {parcel.cost}
                     </span>
                   </td>

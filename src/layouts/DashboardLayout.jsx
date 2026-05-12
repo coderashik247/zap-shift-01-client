@@ -2,8 +2,11 @@ import { Outlet } from "react-router";
 import { CiDeliveryTruck } from "react-icons/ci";
 import { FaMotorcycle, FaRegCreditCard } from "react-icons/fa6";
 import { Link, NavLink } from "react-router";
+import { FaUsers } from "react-icons/fa";
+import useRole from "../hooks/useRole";
 
 const DashboardLayout = () => {
+  const [role] = useRole();
   return (
     <div className="drawer lg:drawer-open max-w-7xl mx-auto">
       <input id="my-drawer-4" type="checkbox" className="drawer-toggle" />
@@ -29,7 +32,6 @@ const DashboardLayout = () => {
         <label htmlFor="my-drawer-4" className="drawer-overlay"></label>
 
         <div className="w-64 min-h-full bg-base-100 border-r border-base-300 p-5">
-
           {/* BRAND */}
           <div className="mb-8">
             <Link to="/" className="text-2xl font-bold text-secondary">
@@ -40,7 +42,6 @@ const DashboardLayout = () => {
 
           {/* MENU */}
           <ul className="space-y-2">
-
             <li>
               <Link
                 to="/"
@@ -82,22 +83,42 @@ const DashboardLayout = () => {
               </NavLink>
             </li>
 
-            <li>
-              <NavLink
-                to="/dashboard/approve-riders"
-                className={({ isActive }) =>
-                  `flex items-center gap-3 px-3 py-2 rounded-lg transition ${
-                    isActive
-                      ? "bg-primary text-black font-semibold shadow"
-                      : "hover:bg-primary hover:text-black"
-                  }`
-                }
-              >
-                <FaMotorcycle />
-                Approve Riders
-              </NavLink>
-            </li>
-
+            {role === "admin" && (
+              <>
+                {/* Approve Riders */}
+                <li>
+                  <NavLink
+                    to="/dashboard/approve-riders"
+                    className={({ isActive }) =>
+                      `flex items-center gap-3 px-3 py-2 rounded-lg transition ${
+                        isActive
+                          ? "bg-primary text-black font-semibold shadow"
+                          : "hover:bg-primary hover:text-black"
+                      }`
+                    }
+                  >
+                    <FaMotorcycle />
+                    Approve Riders
+                  </NavLink>
+                </li>
+                {/* User Management */}
+                <li>
+                  <NavLink
+                    to="/dashboard/user-management"
+                    className={({ isActive }) =>
+                      `flex items-center gap-3 px-3 py-2 rounded-lg transition ${
+                        isActive
+                          ? "bg-primary text-black font-semibold shadow"
+                          : "hover:bg-primary hover:text-black"
+                      }`
+                    }
+                  >
+                    <FaUsers />
+                    User Management
+                  </NavLink>
+                </li>
+              </>
+            )}
           </ul>
         </div>
       </div>

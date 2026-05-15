@@ -3,13 +3,14 @@ import { useForm, useWatch } from "react-hook-form";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
 import useAuth from "../../hooks/useAuth";
 import Swal from "sweetalert2";
-import { useLoaderData } from "react-router";
+import { useLoaderData, useNavigate } from "react-router";
 import riderImage from "../../assets/images/agent-pending.png";
 
 const RiderRegister = () => {
   const { register, handleSubmit, control } = useForm();
   const axiosSecure = useAxiosSecure();
   const { user } = useAuth();
+  const navigate = useNavigate();
 
   const serviceCenters = useLoaderData();
   const regionDuplicate = serviceCenters.map((c) => c.region);
@@ -27,6 +28,7 @@ const RiderRegister = () => {
     console.log(data);
     axiosSecure.post("/riders", data).then((res) => {
       if (res.data.insertedId) {
+        navigate("/");
         Swal.fire({
           position: "top-end",
           icon: "success",

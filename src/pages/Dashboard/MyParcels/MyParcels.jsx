@@ -112,7 +112,7 @@ const MyParcels = () => {
       {/* Table Card */}
       <div className="bg-base-100 shadow-xl rounded-2xl overflow-hidden border border-base-300">
         <div className="overflow-x-auto">
-          <table className="table table-lg text-lg">
+          <table className="table table-lg">
             {/* Table Head */}
             <thead className="bg-secondary text-white">
               <tr>

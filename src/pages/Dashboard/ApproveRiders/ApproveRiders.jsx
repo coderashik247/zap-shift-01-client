@@ -121,7 +121,8 @@ const ApproveRiders = () => {
                 <th>Name</th>
                 <th>Email</th>
                 <th>District</th>
-                <th>Status</th>
+                <th>Application Status</th>
+                <th>Work Status</th>
                 <th className="text-center">Actions</th>
               </tr>
             </thead>
@@ -157,6 +158,19 @@ const ApproveRiders = () => {
                       } text-black`}
                     >
                       {rider.status}
+                    </span>
+                  </td>
+                  <td>
+                    <span
+                      className={`badge ${
+                        rider.workStats === "available"
+                          ? "badge-warning"
+                          : rider.workStats === "in_delivery"
+                          ? "badge-success"
+                          : "badge-error"
+                      } text-black`}
+                    >
+                      {rider.workStats}
                     </span>
                   </td>
 

@@ -25,7 +25,9 @@ const Navbar = () => {
   const links = (
     <>
       <li>
-        <NavLink to="/" className={navLinkClass}>Services</NavLink>
+        <NavLink to="/" className={navLinkClass}>
+          Services
+        </NavLink>
       </li>
 
       <li>
@@ -98,55 +100,125 @@ const Navbar = () => {
         </div>
 
         {/* Right */}
-        <div className="navbar-end gap-3">
-          {/* User Image */}
+        <div className="navbar-end gap-3 relative">
+          {/* USER */}
           {user && (
             <div className="dropdown dropdown-end">
-              <div tabIndex={0} role="button" className="avatar cursor-pointer">
-                <div className="w-11 rounded-full border-2 border-primary">
-                  <img
-                    src={user?.photoURL}
-                    alt={user?.displayName}
-                    referrerPolicy="no-referrer"
-                  />
+              {/* AVATAR BUTTON */}
+              <div
+                tabIndex={0}
+                role="button"
+                className="flex items-center gap-3 cursor-pointer rounded-full px-2 py-1 hover:bg-base-200 transition duration-200"
+              >
+                <div className="avatar">
+                  <div className="w-11 rounded-full border-2 border-primary">
+                    <img
+                      src={
+                        user?.photoURL || "https://i.ibb.co/4pDNDk1/avatar.png"
+                      }
+                      alt={user?.displayName}
+                      referrerPolicy="no-referrer"
+                    />
+                  </div>
+                </div>
+
+                {/* NAME */}
+                <div className="hidden lg:block leading-tight">
+                  <h3 className="font-semibold text-secondary text-sm">
+                    {user?.displayName}
+                  </h3>
+
+                  <p className="text-xs text-gray-500">Welcome Back 👋</p>
                 </div>
               </div>
 
-              <ul
+              {/* DROPDOWN */}
+              <div
                 tabIndex={0}
-                className="menu menu-sm dropdown-content mt-3 z-1 p-3 shadow bg-base-100 rounded-box w-60"
+                className="
+          dropdown-content
+          z-999
+          mt-4
+          w-72
+          rounded-3xl
+          overflow-hidden
+          bg-white
+          shadow-2xl
+          border
+          border-base-300
+        "
               >
-                <li className="font-bold text-secondary">
-                  {user?.displayName}
-                </li>
+                {/* TOP */}
+                <div className="bg-secondary px-5 py-5 text-white">
+                  <div className="flex items-center gap-4">
+                    <div className="avatar">
+                      <div className="w-16 rounded-2xl border-2 border-primary">
+                        <img
+                          src={
+                            user?.photoURL ||
+                            "https://i.ibb.co/4pDNDk1/avatar.png"
+                          }
+                          alt={user?.displayName}
+                          referrerPolicy="no-referrer"
+                        />
+                      </div>
+                    </div>
 
-                <li className="text-xs opacity-70">{user?.email}</li>
+                    <div className="min-w-0">
+                      <h2 className="font-bold text-lg truncate">
+                        {user?.displayName}
+                      </h2>
 
-                <li className="mt-2">
+                      <p className="text-sm text-white/70 truncate">
+                        {user?.email}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* MENU */}
+                <div className="p-3 space-y-1">
+                  <NavLink
+                    to="/dashboard"
+                    className="flex items-center gap-3 px-4 py-3 rounded-2xl hover:bg-primary/10 transition duration-200"
+                  >
+                    <span>📊</span>
+                    <span className="font-medium">Dashboard</span>
+                  </NavLink>
+
+                  <NavLink
+                    to="/dashboard/my-parcels"
+                    className="flex items-center gap-3 px-4 py-3 rounded-2xl hover:bg-primary/10 transition duration-200"
+                  >
+                    <span>📦</span>
+                    <span className="font-medium">My Parcels</span>
+                  </NavLink>
+
                   <button
                     onClick={handleLogOut}
-                    className="btn btn-error btn-sm text-white"
+                    className="w-full flex items-center gap-3 px-4 py-3 rounded-2xl hover:bg-error hover:text-white transition duration-200"
                   >
-                    Logout
+                    <span>🚪</span>
+                    <span className="font-medium">Logout</span>
                   </button>
-                </li>
-              </ul>
+                </div>
+              </div>
             </div>
           )}
 
-          {/* Login */}
+          {/* LOGIN */}
           {!user && (
             <Link
-              className="btn btn-outline border-secondary text-secondary hover:bg-secondary hover:text-white"
+              className="btn btn-outline border-secondary text-secondary hover:bg-secondary hover:text-white rounded-xl px-5"
               to="/login"
             >
               Log In
             </Link>
           )}
 
-          {/* Rider */}
+          {/* RIDER */}
           <Link
-            className="btn btn-primary text-black rounded-xl px-6"
+            className="btn btn-primary text-black rounded-xl px-6 shadow hover:scale-105 transition duration-200"
             to="/rider"
           >
             Be a Rider

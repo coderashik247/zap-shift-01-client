@@ -21,11 +21,15 @@ const SocialLogin = () => {
           photoURL: result.user.photoURL,
         };
 
+        // axiosSecure.post("/users", userInfo).then((res) => {
+        //   if (res.data.insertedId) {
+        //     console.log("user data has been stored by social");
+        //     navigate(location?.state || "/");
+        //   }
+        // });
         axiosSecure.post("/users", userInfo).then((res) => {
-          if (res.data.insertedId) {
-            console.log("user data has been stored by social");
-            navigate(location?.state || "/");
-          }
+          console.log(res.data);
+          navigate(location?.state?.from || "/");
         });
       })
       .catch((error) => {

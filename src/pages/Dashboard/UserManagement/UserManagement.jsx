@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import {
   FaUserShield,
@@ -12,16 +12,28 @@ import { FiShieldOff } from "react-icons/fi";
 import Swal from "sweetalert2";
 
 const UserManagement = () => {
-  const axiosSecure = useAxiosSecure();
+    const axiosSecure = useAxiosSecure();
+    const [searchText, setSearchText] = useState("");
+    const [debouncedSearch, setDebouncedSearch] = useState("");
+
+    useEffect(() => {
+  const handler = setTimeout(() => {
+    setDebouncedSearch(searchText);
+  }, 500); // 500ms delay
+
+  return () => {
+    clearTimeout(handler);
+  };
+}, [searchText]);
 
   const {
     data: users = [],
     isLoading,
     refetch,
   } = useQuery({
-    queryKey: ["users"],
+    queryKey: ["users", debouncedSearch],
     queryFn: async () => {
-      const res = await axiosSecure.get("/users");
+      const res = await axiosSecure.get(`/users?searchText=${debouncedSearch}`);
       return res.data;
     },
   });
@@ -75,12 +87,12 @@ const UserManagement = () => {
   };
 
   // View User
-const handleView = (user) => {
-  Swal.fire({
-    showConfirmButton: false,
-    showCloseButton: true, // built-in close button
-    background: "#ffffff",
-    html: `
+  const handleView = (user) => {
+    Swal.fire({
+      showConfirmButton: false,
+      showCloseButton: true, // built-in close button
+      background: "#ffffff",
+      html: `
       <div style="
         display:flex;
         flex-direction:column;
@@ -123,18 +135,18 @@ const handleView = (user) => {
 
       </div>
     `,
-    footer: `
+      footer: `
       <button id="closeBtn" class="swal2-confirm swal2-styled" style="background:#CAEB66;">
         Close
       </button>
     `,
-    didOpen: () => {
-      document.getElementById("closeBtn").addEventListener("click", () => {
-        Swal.close();
-      });
-    },
-  });
-};
+      didOpen: () => {
+        document.getElementById("closeBtn").addEventListener("click", () => {
+          Swal.close();
+        });
+      },
+    });
+  };
 
   if (isLoading) {
     return (
@@ -153,14 +165,35 @@ const handleView = (user) => {
         </div>
 
         <div>
-          <h2 className="text-3xl font-bold text-secondary">
-            User Management
-          </h2>
+          <h2 className="text-3xl font-bold text-secondary">User Management</h2>
 
-          <p className="text-accent mt-1">
-            Total Users: {users.length}
-          </p>
+          <p className="text-accent mt-1">Total Users: {users.length}</p>
         </div>
+      </div>
+      <div className="w-full lg:w-[320px] mb-4">
+        <label className="input input-bordered flex items-center gap-2 rounded-2xl shadow-sm focus-within:border-primary">
+          {/* SEARCH ICON */}
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 16 16"
+            fill="currentColor"
+            className="h-4 w-4 opacity-70"
+          >
+            <path
+              fillRule="evenodd"
+              d="M9.965 11.026a5.5 5.5 0 1 1 1.06-1.06l3.755 3.754a.75.75 0 1 1-1.06 1.06l-3.755-3.754ZM10.5 6.5a4 4 0 1 0-8 0 4 4 0 0 0 8 0Z"
+              clipRule="evenodd"
+            />
+          </svg>
+
+          {/* INPUT */}
+          <input
+            type="text"
+            className="grow"
+            onChange={(e) => setSearchText(e.target.value)}
+            placeholder="Search users..."
+          />
+        </label>
       </div>
 
       {/* TABLE CARD */}
@@ -231,8 +264,8 @@ const handleView = (user) => {
                         user.role === "admin"
                           ? "badge-error text-white"
                           : user.role === "rider"
-                          ? "badge-warning text-black"
-                          : "badge-info text-white"
+                            ? "badge-warning text-black"
+                            : "badge-info text-white"
                       }`}
                     >
                       {user.role}
@@ -242,28 +275,22 @@ const handleView = (user) => {
                   {/* ADMIN ACTIONS */}
                   <td>
                     <div className="flex flex-wrap gap-2 ">
-
                       {/* ADMIN BUTTON */}
                       {user.role === "admin" ? (
                         <button
-                          onClick={() =>
-                            handleRoleChange(user._id, "user")
-                          }
+                          onClick={() => handleRoleChange(user._id, "user")}
                           className="btn btn-sm bg-error text-white border-none hover:scale-105 transition"
                         >
                           <FiShieldOff />
                         </button>
                       ) : (
                         <button
-                          onClick={() =>
-                            handleRoleChange(user._id, "admin")
-                          }
+                          onClick={() => handleRoleChange(user._id, "admin")}
                           className="btn btn-sm bg-secondary text-white border-none hover:scale-105 transition"
                         >
                           <FaUserShield />
                         </button>
                       )}
-
                     </div>
                   </td>
 
@@ -304,9 +331,7 @@ const handleView = (user) => {
               No Users Found
             </h3>
 
-            <p className="text-gray-500">
-              Registered users will appear here.
-            </p>
+            <p className="text-gray-500">Registered users will appear here.</p>
           </div>
         )}
       </div>

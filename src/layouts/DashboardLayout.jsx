@@ -1,14 +1,18 @@
 import { Outlet } from "react-router";
 import { CiDeliveryTruck } from "react-icons/ci";
-import { FaMotorcycle, FaPeopleCarryBox, FaRegCreditCard } from "react-icons/fa6";
+import {
+  FaMotorcycle,
+  FaPeopleCarryBox,
+  FaRegCreditCard,
+} from "react-icons/fa6";
 import { Link, NavLink } from "react-router";
-import { FaUsers } from "react-icons/fa";
+import { FaTasks, FaUsers } from "react-icons/fa";
 import useRole from "../hooks/useRole";
 
 const DashboardLayout = () => {
   const [role] = useRole();
   console.log("User Role in the dashboard:", role);
-  console.log("User Role in the dashboard:", typeof(role));
+  console.log("User Role in the dashboard:", typeof role);
   return (
     <div className="drawer lg:drawer-open max-w-362.5 mx-auto">
       <input id="my-drawer-4" type="checkbox" className="drawer-toggle" />
@@ -84,7 +88,25 @@ const DashboardLayout = () => {
                 Payment History
               </NavLink>
             </li>
-
+            {/* Rider-only Links */}
+            {
+              role === "rider" && (<li>
+              <NavLink
+                to="/dashboard/assigned-deliveries"
+                className={({ isActive }) =>
+                  `flex items-center gap-3 px-3 py-2 rounded-lg transition ${
+                    isActive
+                      ? "bg-primary text-black font-semibold shadow"
+                      : "hover:bg-primary hover:text-black"
+                  }`
+                }
+              >
+                <FaTasks />
+                Assigned Deliveries
+              </NavLink>
+            </li>)
+            }
+            {/* Admin-only Links */}
             {role === "admin" && (
               <>
                 {/* Approve Riders */}
@@ -115,7 +137,7 @@ const DashboardLayout = () => {
                       }`
                     }
                   >
-                    <FaPeopleCarryBox/>
+                    <FaPeopleCarryBox />
                     Assign Riders
                   </NavLink>
                 </li>

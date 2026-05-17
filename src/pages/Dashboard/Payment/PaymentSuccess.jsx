@@ -73,7 +73,7 @@ const PaymentSuccess = () => {
         </div>
 
         {/* Button */}
-        < Link to="/" className="btn btn-primary mt-6 w-full">
+        < Link to="/dashboard" className="btn btn-primary mt-6 w-full">
           Go to Dashboard
         </Link>
 

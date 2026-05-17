@@ -3,6 +3,7 @@ import useAuth from "../../../hooks/useAuth";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import { useQuery } from "@tanstack/react-query";
 import { FaMoneyBillWave } from "react-icons/fa6";
+import { Link } from "react-router";
 
 const PaymentHistory = () => {
   const { user } = useAuth();
@@ -89,9 +90,9 @@ const PaymentHistory = () => {
                   </td>
 
                   <td>
-                    <span className="badge badge-outline badge-primary text-secondary">
+                    <Link to={`/parcel-track/${payment.trackingId}/logs`} className="badge badge-outline badge-primary text-secondary">
                       {payment.trackingId}
-                    </span>
+                    </Link>
                   </td>
 
                   <td className="text-sm text-gray-500">

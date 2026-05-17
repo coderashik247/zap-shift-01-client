@@ -13,7 +13,7 @@ const AssignRiders = () => {
   const [selectedRider, setSelectedRider] = useState(null);
 
   // FETCH PENDING PARCELS
-  const { data: parcels = [] } = useQuery({
+  const { data: parcels = [], refetch: riderRefetch } = useQuery({
     queryKey: ["parcels", "pending-pickup"],
     queryFn: async () => {
       const res = await axiosSecure.get(
@@ -30,7 +30,7 @@ const AssignRiders = () => {
     enabled: !!selectedParcel,
     queryFn: async () => {
       const res = await axiosSecure.get(
-        `/riders?status=approved&district=${selectedParcel?.senderDistrict}`,
+        `/riders?status=approved&district=${selectedParcel?.senderDistrict}&workStats=available`,
       );
 
       return res.data;
@@ -50,27 +50,30 @@ const AssignRiders = () => {
   };
 
   // HANDLE ASSIGN RIDER
-  const handleAssignRider = (rider) =>{
+  const handleAssignRider = (rider) => {
     const riderInfo = {
-        riderId: rider._id,
-        riderName: rider.name,
-        riderEmail: rider.email,
-        parcelId: selectedParcel._id,
-    }
+      riderId: rider._id,
+      riderName: rider.name,
+      riderEmail: rider.email,
+      parcelId: selectedParcel._id,
+      trackingId: selectedParcel.trackingId,
+    };
 
-    axiosSecure.patch(`/parcels/${selectedParcel._id}`, riderInfo)
-    .then(res => {
-        if(res.data.modifiedCount){
-            parcelRefetch();
-            Swal.fire({
-                title: "Rider Assigned!",
-                text: `${rider.name} has been assigned to this parcel.`,
-                icon: "success",
-                });
-                riderModalRef.current.close();
+    axiosSecure
+      .patch(`/parcels/${selectedParcel._id}`, riderInfo)
+      .then((res) => {
+        if (res.data.modifiedCount) {
+          parcelRefetch();
+          riderRefetch();
+          Swal.fire({
+            title: "Rider Assigned!",
+            text: `${rider.name} has been assigned to this parcel.`,
+            icon: "success",
+          });
+          riderModalRef.current.close();
         }
-    })
-  }
+      });
+  };
 
   return (
     <div className="p-6">
@@ -261,7 +264,10 @@ const AssignRiders = () => {
                           View Profile
                         </button>
 
-                        <button onClick={() => handleAssignRider(rider)} className="btn btn-primary text-black rounded-xl hover:scale-105 transition duration-200">
+                        <button
+                          onClick={() => handleAssignRider(rider)}
+                          className="btn btn-primary text-black rounded-xl hover:scale-105 transition duration-200"
+                        >
                           Assign Rider
                         </button>
                       </div>

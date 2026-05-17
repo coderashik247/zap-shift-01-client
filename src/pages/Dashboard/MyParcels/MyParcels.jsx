@@ -62,6 +62,7 @@ const MyParcels = () => {
         senderEmail: parcel.senderEmail,
         cost: parcel.cost,
         parcelName: parcel.parcelName,
+        trackingId: parcel.trackingId,
       };
 
       const res = await axiosSecure.post(

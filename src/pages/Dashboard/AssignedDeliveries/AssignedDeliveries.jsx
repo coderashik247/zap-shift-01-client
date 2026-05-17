@@ -29,7 +29,7 @@ const AssignedDeliveries = () => {
   const handleDeliveryStatusUpdate = (parcel, status) => {
     const message = `Parcel status updated to ${status.replaceAll("_", " ")}`;
 
-    const statusInfo = { deliveryStatus: status };
+    const statusInfo = { deliveryStatus: status, riderId: parcel.riderId, trackingId:parcel.trackingId };
 
     axiosSecure
       .patch(`/parcels/${parcel._id}/status`, statusInfo)
@@ -135,7 +135,7 @@ const AssignedDeliveries = () => {
 
                   {/* STATUS */}
                   <td>
-                    <span className="badge badge-warning text-black capitalize px-4 py-3">
+                    <span className="badge badge-warning text-black capitalize text-sm px-4 py-3">
                       {parcel.deliveryStatus.replaceAll("_", " ")}
                     </span>
                   </td>

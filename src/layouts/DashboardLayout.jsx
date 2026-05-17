@@ -8,6 +8,7 @@ import {
 import { Link, NavLink } from "react-router";
 import { FaTasks, FaUsers } from "react-icons/fa";
 import useRole from "../hooks/useRole";
+import { SiGoogletasks } from "react-icons/si";
 
 const DashboardLayout = () => {
   const [role] = useRole();
@@ -50,7 +51,7 @@ const DashboardLayout = () => {
           <ul className="space-y-2">
             <li>
               <Link
-                to="/"
+                to="/dashboard"
                 className="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-primary hover:text-black transition"
               >
                 🏠 Homepage
@@ -89,23 +90,40 @@ const DashboardLayout = () => {
               </NavLink>
             </li>
             {/* Rider-only Links */}
-            {
-              role === "rider" && (<li>
-              <NavLink
-                to="/dashboard/assigned-deliveries"
-                className={({ isActive }) =>
-                  `flex items-center gap-3 px-3 py-2 rounded-lg transition ${
-                    isActive
-                      ? "bg-primary text-black font-semibold shadow"
-                      : "hover:bg-primary hover:text-black"
-                  }`
-                }
-              >
-                <FaTasks />
-                Assigned Deliveries
-              </NavLink>
-            </li>)
-            }
+            {role === "rider" && (
+              <>
+                <li>
+                  <NavLink
+                    to="/dashboard/assigned-deliveries"
+                    className={({ isActive }) =>
+                      `flex items-center gap-3 px-3 py-2 rounded-lg transition ${
+                        isActive
+                          ? "bg-primary text-black font-semibold shadow"
+                          : "hover:bg-primary hover:text-black"
+                      }`
+                    }
+                  >
+                    <FaTasks />
+                    Assigned Deliveries
+                  </NavLink>
+                </li>
+                <li>
+                  <NavLink
+                    to="/dashboard/completed-deliveries"
+                    className={({ isActive }) =>
+                      `flex items-center gap-3 px-3 py-2 rounded-lg transition ${
+                        isActive
+                          ? "bg-primary text-black font-semibold shadow"
+                          : "hover:bg-primary hover:text-black"
+                      }`
+                    }
+                  >
+                    <SiGoogletasks />
+                    Completed Deliveries
+                  </NavLink>
+                </li>
+              </>
+            )}
             {/* Admin-only Links */}
             {role === "admin" && (
               <>
